@@ -24,13 +24,15 @@ public class CalculadoraController {
             return;
         }
 
+        // Números
         if (entrada.matches("[0-9]")) {
 
             if (calculoTerminado) {
                 calculoTerminado = false;
-                opcion2 = entrada;
-                operador = "";
+                opcion1 = entrada;
+                opcion2 = "";
             } else {
+
                 if (operador.isEmpty()) {
                     opcion1 += entrada;
                 } else {
@@ -40,30 +42,34 @@ public class CalculadoraController {
 
             actualizarPantalla(pantalla);
 
-        } else if (entrada.equals("+")) {
+
+        // Operadores
+        } else if (entrada.equals("+")
+                || entrada.equals("-")
+                || entrada.equals("*")
+                || entrada.equals("/")) {
 
             operador = entrada;
             calculoTerminado = false;
+
             actualizarPantalla(pantalla);
 
-        } else if (entrada.equals("-")) {
 
-            operador = entrada;
-            calculoTerminado = false;
+        // Raíz cuadrada
+        } else if (entrada.equals("√")) {
+
+            if (!opcion1.isEmpty()) {
+
+                opcion1 = resultadoRaiz(opcion1);
+                operador = "";
+                opcion2 = "";
+                calculoTerminado = true;
+            }
+
             actualizarPantalla(pantalla);
 
-        } else if (entrada.equals("*")) {
 
-            operador = entrada;
-            calculoTerminado = false;
-            actualizarPantalla(pantalla);
-
-        } else if (entrada.equals("/")) {
-
-            operador = entrada;
-            calculoTerminado = false;
-            actualizarPantalla(pantalla);
-
+        // Igual
         } else if (entrada.equals("=")) {
 
             if (!opcion1.isEmpty() && !opcion2.isEmpty()) {
@@ -90,6 +96,7 @@ public class CalculadoraController {
         }
     }
 
+
     private void actualizarPantalla(Label pantalla) {
 
         pantalla.setMaxWidth(Double.MAX_VALUE);
@@ -97,45 +104,44 @@ public class CalculadoraController {
 
         if (operador.isEmpty()) {
             pantalla.setText(opcion1);
+
         } else if (opcion2.isEmpty()) {
             pantalla.setText(opcion1 + " " + operador);
+
         } else {
             pantalla.setText(opcion1 + " " + operador + " " + opcion2);
         }
     }
 
+
     private String resultadoSuma(String numeroUno, String numeroDos) {
-        String resultado;
 
         int datoUno = Integer.parseInt(numeroUno.trim());
         int datoDos = Integer.parseInt(numeroDos.trim());
-        int suma = datoUno + datoDos;
 
-        return resultado = String.valueOf(suma);
+        return String.valueOf(datoUno + datoDos);
     }
+
 
     private String resultadoResta(String numeroUno, String numeroDos) {
-        String resultado;
 
         int datoUno = Integer.parseInt(numeroUno.trim());
         int datoDos = Integer.parseInt(numeroDos.trim());
-        int resta = datoUno - datoDos;
 
-        return resultado = String.valueOf(resta);
+        return String.valueOf(datoUno - datoDos);
     }
+
 
     private String resultadoMultiplicacion(String numeroUno, String numeroDos) {
-        String resultado;
 
         int datoUno = Integer.parseInt(numeroUno.trim());
         int datoDos = Integer.parseInt(numeroDos.trim());
-        int multiplicacion = datoUno * datoDos;
 
-        return resultado = String.valueOf(multiplicacion);
+        return String.valueOf(datoUno * datoDos);
     }
 
+
     private String resultadoDivision(String numeroUno, String numeroDos) {
-        String resultado;
 
         int datoUno = Integer.parseInt(numeroUno.trim());
         int datoDos = Integer.parseInt(numeroDos.trim());
@@ -144,8 +150,21 @@ public class CalculadoraController {
             return "Error";
         }
 
-        int division = datoUno / datoDos;
+        return String.valueOf(datoUno / datoDos);
+    }
 
-        return resultado = String.valueOf(division);
+
+    // Método para raíz cuadrada
+    private String resultadoRaiz(String numero) {
+
+        double valor = Double.parseDouble(numero.trim());
+
+        if (valor < 0) {
+            return "Error";
+        }
+
+        double raiz = Math.sqrt(valor);
+
+        return String.valueOf(raiz);
     }
 }
