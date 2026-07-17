@@ -12,57 +12,61 @@ public class CalculadoraController {
 
     public CalculadoraController() {
     }
-
-public void procesoDeEntrada(String entrada, Label pantalla) {
-    if (entrada.equals("C")) {
-        opcion1 = ""; operador = ""; opcion2 = "";
-        calculoTerminado = false;
-        pantalla.setText("0");
-        return;
-    }
-
-    if (entrada.matches("[0-9]")) {
-        // CORRECCIÓN: Si el cálculo terminó, el usuario quiere seguir sumando.
-        // Mantenemos opcion1 (que es el resultado anterior) y permitimos que 
-        // el número presionado se guarde en opcion2.
-        if (calculoTerminado) {
-            calculoTerminado = false;
-            // No reseteamos opcion1, la mantenemos para seguir operando
-            opcion2 = entrada; // El primer número de la nueva parte
-            operador = ""; // Limpiamos el operador antiguo
-        } else {
-            if (operador.isEmpty()) {
-                opcion1 += entrada;
-            } else {
-                opcion2 += entrada;
-            }
-        }
-        actualizarPantalla(pantalla);
-        
-    } else if (entrada.equals("+")) {
-        // Si ya hay un resultado y presionan "+", el resultado actual (opcion1)
-        // se convierte en la base para la siguiente suma.
-        operador = entrada;
-        calculoTerminado = false; // Ya no está "terminado", está en proceso
-        actualizarPantalla(pantalla);
-        
-    } else if (entrada.equals("=")) {
-        if (!opcion1.isEmpty() && !opcion2.isEmpty() && operador.equals("+")) {
-            opcion1 = resultadoSuma(opcion1, opcion2);
+    public void procesoDeEntrada(String entrada, Label pantalla) {
+        if (entrada.equals("C")) {
+            opcion1 = "";
             operador = "";
             opcion2 = "";
-            calculoTerminado = true;
+            calculoTerminado = false;
+            pantalla.setText("0");
+            return;
         }
-        actualizarPantalla(pantalla);
-    }
-}
+        if (entrada.matches("[0-9]")) {
 
+            if (calculoTerminado) {
+                calculoTerminado = false;
+                opcion2 = entrada;
+                operador = "";
+            } else {
+                if (operador.isEmpty()) {
+                    opcion1 += entrada;
+                } else {
+                    opcion2 += entrada;
+                }
+            }
+            actualizarPantalla(pantalla);
+        } else if (entrada.equals("+") || entrada.equals("-")
+                || entrada.equals("*") || entrada.equals("/")) {
+
+            operador = entrada;
+            calculoTerminado = false;
+            actualizarPantalla(pantalla);
+
+        } else if (entrada.equals("=")) {
+
+            if (!opcion1.isEmpty() && !opcion2.isEmpty()) {
+                if (operador.equals("+")) {
+                    opcion1 = resultadoSuma(opcion1, opcion2);
+                } else if (operador.equals("-")) {
+                    opcion1 = resultadoResta(opcion1, opcion2);
+                } else if (operador.equals("*")) {
+                    opcion1 = resultadoMultiplicacion(opcion1, opcion2);
+                } else if (operador.equals("/")) {
+                    opcion1 = resultadoDivision(opcion1, opcion2);
+                }
+                operador = "";
+                opcion2 = "";
+                calculoTerminado = true;
+            }
+            actualizarPantalla(pantalla);
+        }
+    }
     private void actualizarPantalla(Label pantalla) {
-        // Aseguramos que el Label mantenga su configuración de ancho máximo
         pantalla.setMaxWidth(Double.MAX_VALUE);
         pantalla.setAlignment(Pos.CENTER_RIGHT);
-
-        if (operador.isEmpty()) {
+        if (opcion1.isEmpty()) {
+            pantalla.setText("0");
+        } else if (operador.isEmpty()) {
             pantalla.setText(opcion1);
         } else if (opcion2.isEmpty()) {
             pantalla.setText(opcion1 + " " + operador);
@@ -70,15 +74,32 @@ public void procesoDeEntrada(String entrada, Label pantalla) {
             pantalla.setText(opcion1 + " " + operador + " " + opcion2);
         }
     }
-
     private String resultadoSuma(String numeroUno, String numeroDos) {
-        String resultado;
-        // Usamos .trim() para quitar los espacios antes de convertir
         int datoUno = Integer.parseInt(numeroUno.trim());
         int datoDos = Integer.parseInt(numeroDos.trim());
         int suma = datoUno + datoDos;
-
-        return resultado = String.valueOf(suma);
+        return String.valueOf(suma);
+    }
+    private String resultadoResta(String numeroUno, String numeroDos) {
+        int datoUno = Integer.parseInt(numeroUno.trim());
+        int datoDos = Integer.parseInt(numeroDos.trim());
+        int resta = datoUno - datoDos;
+        return String.valueOf(resta);
+    }
+    private String resultadoMultiplicacion(String numeroUno, String numeroDos) {
+        int datoUno = Integer.parseInt(numeroUno.trim());
+        int datoDos = Integer.parseInt(numeroDos.trim());
+        int multiplicacion = datoUno * datoDos;
+        return String.valueOf(multiplicacion);
+    }
+    private String resultadoDivision(String numeroUno, String numeroDos) {
+        int datoUno = Integer.parseInt(numeroUno.trim());
+        int datoDos = Integer.parseInt(numeroDos.trim());
+        if (datoDos == 0) {
+            return "Error";
+        }
+        int division = datoUno / datoDos;
+        return String.valueOf(division);
     }
 
 }
