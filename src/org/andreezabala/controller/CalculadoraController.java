@@ -12,7 +12,9 @@ public class CalculadoraController {
 
     public CalculadoraController() {
     }
+
     public void procesoDeEntrada(String entrada, Label pantalla) {
+
         if (entrada.equals("C")) {
             opcion1 = "";
             operador = "";
@@ -21,6 +23,7 @@ public class CalculadoraController {
             pantalla.setText("0");
             return;
         }
+
         if (entrada.matches("[0-9]")) {
 
             if (calculoTerminado) {
@@ -34,9 +37,28 @@ public class CalculadoraController {
                     opcion2 += entrada;
                 }
             }
+
             actualizarPantalla(pantalla);
-        } else if (entrada.equals("+") || entrada.equals("-")
-                || entrada.equals("*") || entrada.equals("/")) {
+
+        } else if (entrada.equals("+")) {
+
+            operador = entrada;
+            calculoTerminado = false;
+            actualizarPantalla(pantalla);
+
+        } else if (entrada.equals("-")) {
+
+            operador = entrada;
+            calculoTerminado = false;
+            actualizarPantalla(pantalla);
+
+        } else if (entrada.equals("*")) {
+
+            operador = entrada;
+            calculoTerminado = false;
+            actualizarPantalla(pantalla);
+
+        } else if (entrada.equals("/")) {
 
             operador = entrada;
             calculoTerminado = false;
@@ -45,28 +67,35 @@ public class CalculadoraController {
         } else if (entrada.equals("=")) {
 
             if (!opcion1.isEmpty() && !opcion2.isEmpty()) {
+
                 if (operador.equals("+")) {
                     opcion1 = resultadoSuma(opcion1, opcion2);
+
                 } else if (operador.equals("-")) {
                     opcion1 = resultadoResta(opcion1, opcion2);
+
                 } else if (operador.equals("*")) {
                     opcion1 = resultadoMultiplicacion(opcion1, opcion2);
+
                 } else if (operador.equals("/")) {
                     opcion1 = resultadoDivision(opcion1, opcion2);
                 }
+
                 operador = "";
                 opcion2 = "";
                 calculoTerminado = true;
             }
+
             actualizarPantalla(pantalla);
         }
     }
+
     private void actualizarPantalla(Label pantalla) {
+
         pantalla.setMaxWidth(Double.MAX_VALUE);
         pantalla.setAlignment(Pos.CENTER_RIGHT);
-        if (opcion1.isEmpty()) {
-            pantalla.setText("0");
-        } else if (operador.isEmpty()) {
+
+        if (operador.isEmpty()) {
             pantalla.setText(opcion1);
         } else if (opcion2.isEmpty()) {
             pantalla.setText(opcion1 + " " + operador);
@@ -74,32 +103,49 @@ public class CalculadoraController {
             pantalla.setText(opcion1 + " " + operador + " " + opcion2);
         }
     }
+
     private String resultadoSuma(String numeroUno, String numeroDos) {
+        String resultado;
+
         int datoUno = Integer.parseInt(numeroUno.trim());
         int datoDos = Integer.parseInt(numeroDos.trim());
         int suma = datoUno + datoDos;
-        return String.valueOf(suma);
+
+        return resultado = String.valueOf(suma);
     }
+
     private String resultadoResta(String numeroUno, String numeroDos) {
+        String resultado;
+
         int datoUno = Integer.parseInt(numeroUno.trim());
         int datoDos = Integer.parseInt(numeroDos.trim());
         int resta = datoUno - datoDos;
-        return String.valueOf(resta);
+
+        return resultado = String.valueOf(resta);
     }
+
     private String resultadoMultiplicacion(String numeroUno, String numeroDos) {
+        String resultado;
+
         int datoUno = Integer.parseInt(numeroUno.trim());
         int datoDos = Integer.parseInt(numeroDos.trim());
         int multiplicacion = datoUno * datoDos;
-        return String.valueOf(multiplicacion);
+
+        return resultado = String.valueOf(multiplicacion);
     }
+
     private String resultadoDivision(String numeroUno, String numeroDos) {
+        String resultado;
+
         int datoUno = Integer.parseInt(numeroUno.trim());
         int datoDos = Integer.parseInt(numeroDos.trim());
+
         if (datoDos == 0) {
             return "Error";
         }
-        int division = datoUno / datoDos;
-        return String.valueOf(division);
-    }
 
+        int division = datoUno / datoDos;
+
+        return resultado = String.valueOf(division);
+    }
 }
