@@ -15,10 +15,13 @@ public class CalculadoraView {
     private VBox view;
     private Label pantalla;
     private GridPane cuadroBotones;
+    // Controlador
     private CalculadoraController controlador;
-    
 
-    public CalculadoraView() {
+    // CONSTRUCTOR CORREGIDO: Recibe el controlador y lo asigna
+    public CalculadoraView(CalculadoraController controlador) {
+        this.controlador = controlador;
+
         view = new VBox(15);
         view.setPadding(new Insets(15));
         view.setAlignment(Pos.CENTER);
@@ -26,36 +29,34 @@ public class CalculadoraView {
 
         pantalla = new Label("0");
         pantalla.setFont(Font.font("Consolas", FontWeight.BOLD, 40));
-        pantalla.setAlignment(Pos.CENTER_RIGHT);
-        pantalla.setPrefSize(235, 50);
+        pantalla.setMaxWidth(Double.MAX_VALUE); // Ocupa todo el ancho
+        pantalla.setAlignment(Pos.CENTER_RIGHT); // Alineado a la derecha
+// Fondo blanco y padding para que no toque el borde
+        pantalla.setStyle("-fx-background-color: white; -fx-padding: 0 10 0 0;");
 
         cuadroBotones = new GridPane();
         cuadroBotones.setHgap(12);
         cuadroBotones.setVgap(12);
         cuadroBotones.setAlignment(Pos.CENTER);
 
-        // --- Configuración de Botones usando nuevoBoton ---
-        
-        // Fila 1
+        // --- Configuración de Botones ---
         Button btnSiete = nuevoBoton("7");
         Button btnOcho = nuevoBoton("8");
         Button btnNueve = nuevoBoton("9");
         Button btnMultiplicar = nuevoBoton("X");
 
-        // Fila 2
         Button btnCuatro = nuevoBoton("4");
         Button btnCinco = nuevoBoton("5");
         Button btnSeis = nuevoBoton("6");
         Button btnMenos = nuevoBoton("-");
 
-        // Fila 3
         Button btnUno = nuevoBoton("1");
-        btnUno.setOnAction(e -> controlador.procesoDeEntrada(btnUno.getText(), pantalla));
         Button btnDos = nuevoBoton("2");
         Button btnTres = nuevoBoton("3");
         Button btnMas = nuevoBoton("+");
+        Button btnIgual = nuevoBoton("=");
+        Button btnClear = nuevoBoton("C");
 
-        // Agregar al grid
         cuadroBotones.add(btnSiete, 0, 1);
         cuadroBotones.add(btnOcho, 1, 1);
         cuadroBotones.add(btnNueve, 2, 1);
@@ -70,6 +71,8 @@ public class CalculadoraView {
         cuadroBotones.add(btnDos, 1, 3);
         cuadroBotones.add(btnTres, 2, 3);
         cuadroBotones.add(btnMas, 3, 3);
+        cuadroBotones.add(btnIgual, 3, 4);
+        cuadroBotones.add(btnClear, 0, 4);
 
         view.getChildren().addAll(pantalla, cuadroBotones);
     }
@@ -81,7 +84,7 @@ public class CalculadoraView {
     private Button nuevoBoton(String texto) {
         Button btn = new Button(texto);
         btn.setPrefSize(50, 50);
-        btn.setFont(Font.font("Consolas", FontWeight.NORMAL, 20)); // Asegura que tengan la fuente correcta
+        btn.setFont(Font.font("Consolas", FontWeight.NORMAL, 20));
         btn.setStyle("-fx-background-color: #6B8E23; -fx-text-fill:white; -fx-background-radius:5px; -fx-cursor: hand;");
 
         btn.setOnMousePressed(e -> {
@@ -92,6 +95,8 @@ public class CalculadoraView {
             btn.setStyle("-fx-background-color: #6B8E23; -fx-text-fill:white; -fx-background-radius:5px;");
             btn.setTranslateY(0);
         });
+
+        // Ahora sí funciona porque controlador ya está inicializado
         btn.setOnAction(e -> controlador.procesoDeEntrada(texto, pantalla));
         return btn;
     }

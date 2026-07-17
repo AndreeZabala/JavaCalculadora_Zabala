@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.andreezabala.view.CalculadoraView;
+import org.andreezabala.controller.CalculadoraController; // Importa el controlador
 
 public class Main extends Application {
 
@@ -15,19 +16,19 @@ public class Main extends Application {
 
     @Override
     public void start(Stage escenarioPrincipal) throws Exception {
-
         
+        // 1. Instanciamos el controlador
+        CalculadoraController controlador = new CalculadoraController();
         
-        //vista
-        CalculadoraView calculadora = new CalculadoraView();
+        // 2. Pasamos el controlador al constructor de la vista
+        CalculadoraView calculadora = new CalculadoraView(controlador);
+        
         Pane raiz = new Pane(calculadora.getView());
         
-
         Scene escena = new Scene(raiz, 266, 390);
 
         escenarioPrincipal.setTitle("Calculadora de Andree");
         escenarioPrincipal.setScene(escena);
         escenarioPrincipal.show();
     }
-
 }
