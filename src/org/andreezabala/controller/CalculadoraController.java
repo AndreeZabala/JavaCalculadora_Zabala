@@ -47,7 +47,8 @@ public class CalculadoraController {
                 || entrada.equals("-")
                 || entrada.equals("*")
                 || entrada.equals("/")
-                || entrada.equals("^")) {
+                || entrada.equals("%")) {
+
             operador = entrada;
             calculoTerminado = false;
 
@@ -85,6 +86,9 @@ public class CalculadoraController {
 
                 } else if (operador.equals("^")) {
                     opcion1 = resultadoPotencia(opcion1, opcion2);
+
+                } else if (operador.equals("%")) {
+                    opcion1 = resultadoPorcentaje(opcion1, opcion2);
                 }
 
                 operador = "";
@@ -94,8 +98,9 @@ public class CalculadoraController {
 
             actualizarPantalla(pantalla);
         }
-    }
 
+    
+    }
     private void actualizarPantalla(Label pantalla) {
 
         pantalla.setMaxWidth(Double.MAX_VALUE);
@@ -169,6 +174,16 @@ public class CalculadoraController {
         double datoExponente = Double.parseDouble(exponente.trim());
 
         double resultado = Math.pow(datoBase, datoExponente);
+
+        return String.valueOf(resultado);
+    }
+
+    private String resultadoPorcentaje(String numeroUno, String numeroDos) {
+
+        double datoUno = Double.parseDouble(numeroUno.trim());
+        double datoDos = Double.parseDouble(numeroDos.trim());
+
+        double resultado = (datoUno * datoDos) / 100;
 
         return String.valueOf(resultado);
     }
