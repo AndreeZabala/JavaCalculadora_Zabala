@@ -42,20 +42,18 @@ public class CalculadoraController {
 
             actualizarPantalla(pantalla);
 
-
-        // Operadores
+            // Operadores
         } else if (entrada.equals("+")
                 || entrada.equals("-")
                 || entrada.equals("*")
-                || entrada.equals("/")) {
-
+                || entrada.equals("/")
+                || entrada.equals("^")) {
             operador = entrada;
             calculoTerminado = false;
 
             actualizarPantalla(pantalla);
 
-
-        // Raíz cuadrada
+            // Raíz cuadrada
         } else if (entrada.equals("√")) {
 
             if (!opcion1.isEmpty()) {
@@ -68,8 +66,7 @@ public class CalculadoraController {
 
             actualizarPantalla(pantalla);
 
-
-        // Igual
+            // Igual
         } else if (entrada.equals("=")) {
 
             if (!opcion1.isEmpty() && !opcion2.isEmpty()) {
@@ -85,6 +82,9 @@ public class CalculadoraController {
 
                 } else if (operador.equals("/")) {
                     opcion1 = resultadoDivision(opcion1, opcion2);
+
+                } else if (operador.equals("^")) {
+                    opcion1 = resultadoPotencia(opcion1, opcion2);
                 }
 
                 operador = "";
@@ -95,7 +95,6 @@ public class CalculadoraController {
             actualizarPantalla(pantalla);
         }
     }
-
 
     private void actualizarPantalla(Label pantalla) {
 
@@ -113,7 +112,6 @@ public class CalculadoraController {
         }
     }
 
-
     private String resultadoSuma(String numeroUno, String numeroDos) {
 
         int datoUno = Integer.parseInt(numeroUno.trim());
@@ -121,7 +119,6 @@ public class CalculadoraController {
 
         return String.valueOf(datoUno + datoDos);
     }
-
 
     private String resultadoResta(String numeroUno, String numeroDos) {
 
@@ -131,7 +128,6 @@ public class CalculadoraController {
         return String.valueOf(datoUno - datoDos);
     }
 
-
     private String resultadoMultiplicacion(String numeroUno, String numeroDos) {
 
         int datoUno = Integer.parseInt(numeroUno.trim());
@@ -139,7 +135,6 @@ public class CalculadoraController {
 
         return String.valueOf(datoUno * datoDos);
     }
-
 
     private String resultadoDivision(String numeroUno, String numeroDos) {
 
@@ -153,7 +148,6 @@ public class CalculadoraController {
         return String.valueOf(datoUno / datoDos);
     }
 
-
     // Método para raíz cuadrada
     private String resultadoRaiz(String numero) {
 
@@ -166,5 +160,16 @@ public class CalculadoraController {
         double raiz = Math.sqrt(valor);
 
         return String.valueOf(raiz);
+    }
+
+    // Método para potencia
+    private String resultadoPotencia(String base, String exponente) {
+
+        double datoBase = Double.parseDouble(base.trim());
+        double datoExponente = Double.parseDouble(exponente.trim());
+
+        double resultado = Math.pow(datoBase, datoExponente);
+
+        return String.valueOf(resultado);
     }
 }
